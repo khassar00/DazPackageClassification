@@ -39,7 +39,7 @@ object Zip {
 //            .inputReader().readText()
 // jdk17之前这样写
             .inputStream.bufferedReader().readText()
-    }.onFailure { it.printStackTrace() }.getOrNull()?.ziplog()
+    }.onFailure { it.printStackTrace() }.getOrNull()
     fun getfile(){
 
     }
