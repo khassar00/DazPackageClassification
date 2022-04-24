@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up JDK 16
+        uses: actions/setup-java@v3.1.1
+        with:
+          distribution: 'adopt'
+          java-version: '16'
+          cache: gradle
+      # 更改gradle权限
+      - name: Set execution flag for gradlew
+        run: chmod +x gradlew
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+      - name: Gradle Build Action
+        uses: gradle/gradle-build-action@v2.1.5
+      - run: ./gradlew packageMsi
+      # 获取gradle输出的版本放到txt中
+      - name: set packageVersion
+        run: ./gradlew packageVersion -q > packageVersion.txt
+        shell: pwsh
+      # 使用第三方action获取txt中的版本号
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        id: packageversion
+        with:
+          run: cat packageVersion.txt
+      - name: Check outputs
+        shell: bash
+        run: echo ${{ steps.packageversion.outputs.stdout }}
+      # 创建新的正式版本
+      - name: GH Release
+        uses: softprops/action-gh-release@v0.1.14
+        with:
+          tag_name: ${{  steps.packageversion.outputs.stdout }}
+          name: ${{ steps.packageversion.outputs.stdout }}
+          files: ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
+
