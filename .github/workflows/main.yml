@@ -52,10 +52,10 @@ jobs:
         run: echo ${{ steps.packageversion.outputs.stdout }}
       # 获取文件校验码放到txt中
       - name: Generate checksum
-          uses: jmgilman/actions-generate-checksum@v1
-          with:
-            patterns: |
-              ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
+        uses: jmgilman/actions-generate-checksum@v1
+        with:
+          patterns: |
+            ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
       # 使用第三方action获取txt中的校验
       - name: Command Output
         uses: mathiasvr/command-output@v1.1.0
