@@ -48,12 +48,12 @@ jobs:
         with:
           run: cat packageVersion.txt
       - name: Check outputs
-        shell: bash
+        shell: pwsh
         run: echo ${{ steps.packageversion.outputs.stdout }}
       # 获取文件校验码
       - id: checksum
         run: echo "::set-output name=sha256-checksum::$(${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi)"
-        shell: bash
+        shell: pwsh
       - id: checksum-print
         run: ${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
         shell: bash
