@@ -50,6 +50,18 @@ jobs:
       - name: Check outputs
         shell: bash
         run: echo ${{ steps.packageversion.outputs.stdout }}
+      # 获取文件校验码放到txt中
+      - name: Generate checksum
+          uses: jmgilman/actions-generate-checksum@v1
+          with:
+            patterns: |
+              ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
+      # 使用第三方action获取txt中的校验
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        id: checksum
+        with:
+          run: cat checksum.txt
       # 创建新的正式版本
       - name: GH Release
         uses: softprops/action-gh-release@v0.1.14
@@ -57,4 +69,5 @@ jobs:
           tag_name: ${{  steps.packageversion.outputs.stdout }}
           name: ${{ steps.packageversion.outputs.stdout }}
           files: ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
+          append_body: ${{  steps.checksum.outputs.stdout }}
 
