@@ -59,7 +59,7 @@ jobs:
         shell: pwsh
       # 创建新的正式版本
       - name: GH Release
-        uses: softprops/action-gh-release@v0.1.14
+        uses: softprops/action-gh-release@master
         with:
           tag_name: ${{  steps.packageversion.outputs.stdout }}
           name: ${{ steps.packageversion.outputs.stdout }}
