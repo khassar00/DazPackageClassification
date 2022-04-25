@@ -56,7 +56,7 @@ jobs:
         shell: pwsh
       - id: checksum-print
         run: ${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
-        shell: bash
+        shell:  pwsh
       # 创建新的正式版本
       - name: GH Release
         uses: softprops/action-gh-release@v0.1.14
