@@ -50,14 +50,9 @@ jobs:
       - name: Check outputs
         shell: pwsh
         run: echo ${{ steps.packageversion.outputs.stdout }}
-      # 获取文件校验码
-      - name: Command Output
-        uses: mathiasvr/command-output@v1.1.0
-        id: checksum
-        with:
-          run: certutil -hashfile build/compose/binaries/main/msi/DazPackageClassification-${{ steps.packageversion.outputs.stdout }}.msi SHA256
+
       - id: checksum-print
-        run: echo ${{ steps.checksum.outputs.stdout }}
+        run: echo ${{ hashFiles(${{ github.workspace }}/build/compose/binaries/main/msi/*.msi)}}
         shell: pwsh
       # 创建新的正式版本
       - name: GH Release
@@ -66,6 +61,6 @@ jobs:
           tag_name: ${{  steps.packageversion.outputs.stdout }}
           name: ${{ steps.packageversion.outputs.stdout }}
           files: ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
-          body: ${{ steps.checksum.outputs.sha256-checksum }}
+          body: ${{ hashFiles(${{ github.workspace }}/build/compose/binaries/main/msi/*.msi)}}
           append_body: true
 
