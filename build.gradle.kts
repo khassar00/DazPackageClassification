@@ -24,7 +24,7 @@ tasks.withType<KotlinCompile> {
 }
 tasks.create("packageVersion"){
     doLast{
-        println(compose.desktop.application.nativeDistributions.packageVersion)
+        print(compose.desktop.application.nativeDistributions.packageVersion)
     }
 }
 
