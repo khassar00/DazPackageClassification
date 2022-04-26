@@ -55,7 +55,7 @@ jobs:
         run: echo "::set-output name=sha256-checksum::$(${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi)"
         shell: pwsh
       - id: checksum-print
-        run: ${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
+        run: echo ${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
         shell: pwsh
       # 创建新的正式版本
       - name: GH Release
@@ -64,6 +64,6 @@ jobs:
           tag_name: ${{  steps.packageversion.outputs.stdout }}
           name: ${{ steps.packageversion.outputs.stdout }}
           files: ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
-          body: ${{ steps.checksum.outputs.random-id }}
+          body: ${{ steps.checksum.outputs.sha256-checksum }}
           append_body: true
 
