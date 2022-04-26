@@ -56,7 +56,7 @@ jobs:
         id: checksum
         with:
           run: ${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
-
+        shell: pwsh
       - id: checksum-print
         run: echo ${{ steps.checksum.outputs.stdout }}
         shell: pwsh
