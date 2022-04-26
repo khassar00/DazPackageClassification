@@ -55,7 +55,7 @@ jobs:
         uses: mathiasvr/command-output@v1.1.0
         id: checksum
         with:
-          run: .\/gha-sha.sh /build/compose/binaries/main/msi/*.msi
+          run: certutil -hashfile build/compose/binaries/main/msi/DazPackageClassification-${{ steps.packageversion.outputs.stdout }}.msi SHA256
       - id: checksum-print
         run: echo ${{ steps.checksum.outputs.stdout }}
         shell: pwsh
