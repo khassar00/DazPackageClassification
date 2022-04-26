@@ -52,7 +52,7 @@ jobs:
         run: echo ${{ steps.packageversion.outputs.stdout }}
 
       - id: checksum-print
-        run: echo ${ hashFiles(${{ github.workspace }}/build/compose/binaries/main/msi/*.msi)}
+        run: echo ${{ hashFiles(build/compose/binaries/main/msi/*.msi)}}
         shell: pwsh
       # 创建新的正式版本
       - name: GH Release
@@ -61,6 +61,6 @@ jobs:
           tag_name: ${{  steps.packageversion.outputs.stdout }}
           name: ${{ steps.packageversion.outputs.stdout }}
           files: ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
-          body: ${ hashFiles(${{ github.workspace }}/build/compose/binaries/main/msi/*.msi)}
+          body: ${{ hashFiles(build/compose/binaries/main/msi/*.msi)}}
           append_body: true
 
