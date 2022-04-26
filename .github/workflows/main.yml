@@ -60,7 +60,7 @@ jobs:
         with:
           tag_name: ${{  steps.packageversion.outputs.stdout }}
           name: ${{ steps.packageversion.outputs.stdout }}
-          files: ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
+          files: build/compose/binaries/main/msi/*.msi
           body: ${{ hashFiles('build/compose/binaries/main/msi/*.msi')}}
           append_body: true
 
