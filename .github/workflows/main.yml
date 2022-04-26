@@ -51,11 +51,14 @@ jobs:
         shell: pwsh
         run: echo ${{ steps.packageversion.outputs.stdout }}
       # 获取文件校验码
-      - id: checksum
-        run: echo "::set-output name=sha256-checksum::$(${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi)"
-        shell: pwsh
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        id: checksum
+        with:
+          run: ${{ github.workspace }}/gha-sha.sh ${{ github.workspace }}/build/compose/binaries/main/msi/*.msi
+
       - id: checksum-print
-        run: echo ${{ steps.checksum.outputs.sha256-checksum }}
+        run: echo ${{ steps.checksum.outputs.stdout }}
         shell: pwsh
       # 创建新的正式版本
       - name: GH Release
