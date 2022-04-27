@@ -41,7 +41,11 @@ jobs:
       - name: set packageVersion
         run: ./gradlew packageVersion -q > packageVersion.txt
         shell: pwsh
-      # 使用第三方action获取txt中的版本号
+      # gradle生成校验文件
+      - name: checksum
+        run: ./gradlew checksum
+        shell: pwsh
+        # 使用第三方action获取txt中的版本号
       - name: packageVersion Output
         uses: mathiasvr/command-output@v1.1.0
         id: packageversion
@@ -50,23 +54,13 @@ jobs:
       - name: Check outputs
         shell: pwsh
         run: echo ${{ steps.packageversion.outputs.stdout }}
-      - name: checksum Output
-        uses: mathiasvr/command-output@v1.1.0
-        id: checksum
-        with:
-          run: |
-            $name=Get-ChildItem build/compose/binaries/main/msi/*.msi -name
-            certutil -hashfile ('build/compose/binaries/main/msi/'+$name) SHA256
-      - id: checksum-print
-        run: echo ${{ steps.checksum.outputs.stdout }}
-        shell: pwsh
       # 创建新的正式版本
       - name: GH Release
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{  steps.packageversion.outputs.stdout }}
           name: ${{ steps.packageversion.outputs.stdout }}
-          files: build/compose/binaries/main/msi/*.msi
-          body: ${{ steps.checksum.outputs.stdout }}
-          append_body: true
+          files: |
+            build/compose/binaries/main/msi/*.msi
+            build/compose/binaries/main/msi/*.sha256
 
