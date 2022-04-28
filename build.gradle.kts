@@ -27,6 +27,17 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.github.komputing.khash:keccak:1.1.1")
+    implementation("commons-io:commons-io:2.11.0")
+    implementation("commons-codec:commons-codec:1.15")
+    implementation("org.apache.commons:commons-compress:1.21")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 }
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
